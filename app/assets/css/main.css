@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+
+html {
+    font-size: 16px; /* Base font size */
+    scroll-behavior: smooth; /* Scroll ဆွဲတဲ့အခါ ချောမွေ့စေရန် */
+}
+
+body {
+    font-family: sans-serif; /* Default font သတ်မှတ်ရန် */
+    line-height: 1.5; /* စာကြောင်းအကွာအဝေး */
+    -webkit-font-smoothing: antialiased; /* Font များကို ပိုမိုရှင်းလင်းပြတ်သားစေရန် */
+}
+
+/* ပုံများအတွက် Responsive ဖြစ်စေရန် */
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
