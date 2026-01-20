@@ -5,12 +5,26 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css:["~/assets/css/main.css"],
+
   vite:{
     plugins:[
       tailwindcss()
     ]
   },
+
   nitro:{
     preset:"cloudflare_pages"
+  },
+
+  modules: ["@nuxtjs/supabase"],
+  // supabase: {
+  //   redirect: false
+  // }
+  supabase: {
+    redirectOptions: {
+      login: 'auth/login',
+      callback: '/',
+      exclude: ['/auth/register','/auth/login'] 
+    }
   }
 })
