@@ -1,78 +1,70 @@
+<script lang="ts" setup> // 'async' ကို ဖြုတ်လိုက်ပါ (Nuxt က အလိုလိုသိပါတယ်)
 
-<style scoped>
-
-</style>
-<template>
-  <div>
-     <div>
-    <h1 class="text-4xl font-black">index</h1>
-    <template v-if="user">
-      <h1 class="text-4xl font-black">{{ user.email }}</h1>
-      <!-- <h1 class="text-4xl font-black">{{ user.id }}</h1> -->
-    </template>
-    <p v-else>Loading user data...</p>
-    <!-- ကျန်တဲ့ code များ -->
-  </div>
-    <hr>
-    <button @click="counter++">+</button>
-    <button @click="counter--">-</button>
-    <hr>
-    <br>
-    <p>{{ counter }}</p>
-    <br>
-    <p v-if="pending">loading</p>
-    <p v-if="error">{{error.message}}</p>
-    <ul v-else class="list-disc list-inside p-3">
-      <li v-for="d in data?.data" :key="d">{{ d }}</li>
-    </ul>
-    <NuxtLink href="about">About</NuxtLink>
-    <NuxtLink to="/auth/logout">Logout</NuxtLink>
-
-    
-    
-  </div>
-</template>
-
-
-<script lang="ts" setup async>
-
+// ၁။ Middleware
 definePageMeta({
-  middleware: 'auth',
-    requiresAuth: true,
+  middleware: 'auth'
 })
 
-// const { data: { user } } = await useSupabaseUser()
-const user = await useSupabaseUser()
-
-
-
-// const { error } = await user.value?.signOut()
-
-
-
-// console.log('User data:', {
-//   id: user.value?.id,
-//   email: user.value?.email,
-//   // Add other user properties you need
-// })
+// ၂။ User Data ယူခြင်း (await ဖြုတ်လိုက်ပါ)
+// useSupabaseUser() က ref() တစ်ခုပြန်ပေးတာမို့ await မလိုပါဘူး
+const user = useSupabaseUser()
 
 const counter = useState<number>('count', () => 0)
+
+// ၃။ API Call (lazy: true ထည့်ပါ)
+// ဒါမှ API စောင့်နေတုန်း Page က ချက်ချင်းပွင့်မှာပါ
 const { data, pending, error, refresh } = await useFetch('/api/hello', {
-  key: 'database'
+  key: 'database',
+  lazy: true // <--- Delay မဖြစ်အောင် ဒါလေး မဖြစ်မနေထည့်ပါ
 })
 
-  useHead({
+useHead({
   title: 'linhtutkyaw',
   meta: [
     { name: 'description', content: 'My amazing site.' },
     { name: 'name', content: 'My amazing site.' },
   ],
-
-  
-  // bodyAttrs: {
-  //   class: 'test',
-  // },
-  // script: [{ innerHTML: 'console.log(\'Hello world\')' }],
 })
 
 </script>
+
+<template>
+  <div>
+    <div>
+      <h1 class="text-4xl font-black">index</h1>
+      
+      <template v-if="user">
+        <h1 class="text-xl font-bold text-green-600">{{ user.email }}</h1>
+      </template>
+      <p v-else>Loading user data...</p>
+    </div>
+
+    <hr class="my-4">
+    
+    <div class="flex gap-4 my-2">
+      <button class="border px-4 py-1 bg-gray-200 rounded" @click="counter++">+</button>
+      <button class="border px-4 py-1 bg-gray-200 rounded" @click="counter--">-</button>
+    </div>
+
+    <p class="text-2xl font-bold">{{ counter }}</p>
+    
+    <hr class="my-4">
+
+    <div v-if="pending" class="text-blue-500">
+      Loading data from API...
+    </div>
+    
+    <div v-else-if="error" class="text-red-500">
+      {{ error.message }}
+    </div>
+    
+    <ul v-else class="list-disc list-inside p-3">
+      <li v-for="d in data?.data" :key="d">{{ d }}</li>
+    </ul>
+
+    <div class="flex gap-4 mt-5 text-blue-600 underline">
+      <NuxtLink href="about">About</NuxtLink>
+      <NuxtLink to="/auth/logout">Logout</NuxtLink>
+    </div>
+  </div>
+</template>

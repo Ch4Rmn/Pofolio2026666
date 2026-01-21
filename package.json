@@ -10,11 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/ui": "^4.4.0",
     "@nuxtjs/supabase": "^2.0.3",
     "@tailwindcss/vite": "^4.1.18",
     "better-sqlite3": "^12.6.0",
     "drizzle-orm": "^0.45.1",
     "nuxt": "^4.2.2",
+    "tailwindcss": "^4.1.18",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4",
     "wrangler": "^4.35.0"
@@ -24,6 +26,6 @@
     "@nuxt/schema": "^4.2.2",
     "@nuxt/types": "^2.18.1",
     "@types/better-sqlite3": "^7.6.13",
-    "drizzle-kit": "^0.31.8"
+    "drizzle-kit": "^0.18.1"
   }
 }
